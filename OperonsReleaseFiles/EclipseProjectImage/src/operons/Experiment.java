@@ -902,10 +902,10 @@ class Experiment
 	
 	public static void main(String[] args) throws Exception
 	{
-		File gbFile = new File("data/YOUR_GENBANK_FILE");
-		File timepointsCsv = new File("data/YOUR_TIMEPOINTS_FILE");
-		File timepointsDescripCsv = new File("data/YOUR_TIMEPOINTS_DESCRIPTOR_FILE");
-		File priorOps = new File("data/YOUR_PRIOR_OPERONS_FILE");
+		File gbFile = new File("data/AADV02.1.gbff");
+		File timepointsCsv = new File("data/Shi_Croco.csv");
+		File timepointsDescripCsv = new File("data/Croco_columns.tsv");
+		File priorOps = new File("data/Arkinlab_Predicted_Operons_CROCO.rkn");
 		Experiment exper = new Experiment(gbFile, timepointsCsv, timepointsDescripCsv, priorOps);
 		
 		//
@@ -917,8 +917,6 @@ class Experiment
 		// To use a different classifier model, use a different constructor call above. See static array
 		// CLASSIFIERS[] for names of available WEKA classes.
 		//
-		
-		
 		
 	}
 }
