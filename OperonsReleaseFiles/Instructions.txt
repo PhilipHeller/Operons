@@ -10,30 +10,42 @@ INSTALLATION:
 
 
 
+DATA:
+
+The "data" dir in Eclipse must contain 4 files: 
+
+1)	The GenBank nucleotide record for the genome of the organism being analyzed. For the study
+	described in the article, this release includes data/AADV02.1.gbff (Crocosphaera watsonii WH8501),
+	downloaded from https://www.ncbi.nlm.nih.gov/nuccore/AADV02000001.
+
+2)	Time-series expression data, in comma-separated values (CSV) format. For the study described
+	in the article, this release includes data/Shi_Croco.csv; this is the data set from reference 26
+	in the article (Shi et al. 2010). The file was downloaded from the ISME Journal website at
+	https://www.nature.com/articles/ismej2009148#MOESM4. (Supplementary Table S2.)
+
+3)	A descriptor file that specifies the structure of the expression data file. The descriptor must be
+	in tab-separated values (TSV) format. The first line should say, “SKIP<tab>N”, where N is the number
+	of header and blank lines to be skipped at the start of the time-series file. Each remaining line 
+	should describe one time point of the study. The format is “Column#<tab>hours”, where “hours”
+	gives the number of elapsed hours at the time point. For example, in the Crocosphaera CSV file,
+	column 7 gives expression measurement at the 3-hour time point, so its line is “7<tab>3”. For the study
+	described in the article, this release includes data/Croco_columns.tsv.
+
+4)	Operon predictions for the organism under study. Download from the list of organism links at
+	http://www.microbesonline.org/operons/OperonList.html. For the study described in the article, select
+	Crocosphaera watsonii WH 8501.
+
+
+
 EXECUTION:
 
-1)	The "data" dir in Eclipse must contain 4 files: 
-		- The GenBank nucleotide record for the genome of the organism being analyzed. For the study
-		  described in the article, this release includes data/AADV02.1.gbff (Crocosphaera watsonii WH8501).
-		- Time-series expression data, in comma-separated values (CSV) format. For the study described
-		  in the article, this release includes data/Shi_Croco.csv; this is the data set from reference 26
-		  in the article.
-		- A descriptor file that specifies the structure of the expression data file. The descriptor must be
-		  in tab-separated values (TSV) format. The first line should say, “SKIP<tab>N”, where N is the number
-		  of header and blank lines to be skipped at the start of the time-series file. Each remaining line 
-		  should describe one time point of the study. The format is “Column#<tab>hours”, where “hours”
-		  gives the number of elapsed hours at the time point. For example, in the Crocosphaera CSV file,
-		  column 7 gives expression measurement at the 3-hour time point, so its line is “7<tab>3”. For the study
-		  described in the article, this release includes data/Croco_columns.tsv.
-		- Operon predictions for the organism under study. Download from http://www.microbesonline.org/operons/OperonList.html.
-
-2)	Edit the main() method at the bottom of Experiment.java. Change lines 905-908 to specify your 4 data files. For the
+1)	Edit the main() method at the bottom of Experiment.java. Change lines 905-908 to specify your 4 data files. For the
 	study described in the article, you just need to edit line 908, which specifies the name of the operon predictions file.
 
-3) 	Following the instructions in the comments in lines 911-919, add a few lines of code to evaluate WEKA's classifiers, to
+2) 	Following the instructions in the comments in lines 911-919, add a few lines of code to evaluate WEKA's classifiers, to
 	classify merge candidates using an LMT model, or to classify mergecandidates using any desired WEKA model.
 
-4)	Execute the Experiment class as a Java application.
+3)	Execute the Experiment class as a Java application.
 
 
 
