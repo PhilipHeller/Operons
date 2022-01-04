@@ -1,0 +1,50 @@
+INSTALLATION:
+
+1)	Un-jar the jar file.
+2)	Create an Eclipse workspace.
+3)	Create a Java project called “operonsproj” in the workspace.
+4)	Into the project, import dirs “src”, "data", and "lib" from this release. You can easily do this
+	by selecting the dirs and dragging them into the icon for the Java workspace.
+5)	In Project -> Properties -> Java Build Path, add lib/commons-math3-3.6.1.jar	 and lib/weka.jar to
+	the project's build path.
+
+
+
+EXECUTION:
+
+1)	The "data" dir in Eclipse must contain 4 files: 
+		- The GenBank nucleotide record for the genome of the organism being analyzed. For the study
+		  described in the article, this release includes data/AADV02.1.gbff (Crocosphaera watsonii WH8501).
+		- Time-series expression data, in comma-separated values (CSV) format. For the study described
+		  in the article, this release includes data/Shi_Croco.csv; this is the data set from reference 26
+		  in the article.
+		- A descriptor file that specifies the structure of the expression data file. The descriptor must be
+		  in tab-separated values (TSV) format. The first line should say, “SKIP<tab>N”, where N is the number
+		  of header and blank lines to be skipped at the start of the time-series file. Each remaining line 
+		  should describe one time point of the study. The format is “Column#<tab>hours”, where “hours”
+		  gives the number of elapsed hours at the time point. For example, in the Crocosphaera CSV file,
+		  column 7 gives expression measurement at the 3-hour time point, so its line is “7<tab>3”. For the study
+		  described in the article, this release includes data/Croco_columns.tsv.
+		- Operon predictions for the organism under study. Download from http://www.microbesonline.org/operons/OperonList.html.
+
+2)	Edit the main() method at the bottom of Experiment.java. Change lines 905-908 to specify your 4 data files. For the
+	study described in the article, you just need to edit line 908, which specifies the name of the operon predictions file.
+
+3) 	Following the instructions in the comments in lines 911-919, add a few lines of code to evaluate WEKA's classifiers, to
+	classify merge candidates using an LMT model, or to classify mergecandidates using any desired WEKA model.
+
+4)	Execute the Experiment class as a Java application.
+
+
+
+LICENSES:
+This software is released under v3.0 of the GNU General Public License. 
+WEKA revision 3.8.5 is released under v3.0 of the GNU General Public License.
+The Apache Commons math library revision 3.6.1 is released under Version 2.0 of the Apache License
+
+
+
+VERSIONS: 
+Java code: Developed under JavaSE-15, but compatible with the free version 1.8. 
+WEKA revision 3.8.5.
+Apache Commons math library revision 3.6.1.
