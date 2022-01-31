@@ -1,0 +1,71 @@
+INSTALLATION:
+
+1)	Download from https://github.com/PhilipHeller/Operons.
+2)	Unzip the download. Its top level is called "OperonsReleaseFiles". In the Source_and_data subdir, 
+	unzip Source_and_data.zip.
+2)	Create an Eclipse workspace.
+3)	Create a Java project called “operonsproj” in the workspace. Eclipse might ask if you want to create
+	module info. It isn't necessary, and you should only do it if you have a good reason and know how to
+	do it; otherwise don't used module info.
+4)	Drag and drop the downloaded OperonsReleaseFiles/Source_and_data/data directory onto “operonsproj/” in the 
+	Package Explorer. If asked, choose the "Copy files and folders" option.
+5)	In the downloaded OperonsReleaseFiles/Source_and_datasrc/src subdir, select both "operons" and "weka", and 
+	drag/drop them onto "src" in the
+	Package Explorer. If asked, choose the "Copy files and folders" option. A number of WEKA packages will be
+	marked with red flags to indicate they contain compiler errors. The errors won't cause problems, as they
+	are all in code that isn't used.
+
+
+
+DATA:
+
+The "data" dir in Eclipse must contain 4 files: 
+
+1)	The GenBank nucleotide record for the genome of the organism being analyzed. For the study
+	described in the article, this release includes data/AADV02.1.gbff (Crocosphaera watsonii 
+	WH8501), downloaded from https://www.ncbi.nlm.nih.gov/nuccore/AADV02000001.
+
+2)	Time-series expression data, in comma-separated values (CSV) format. For the study described
+	in the article, this release includes data/Shi_Croco.csv; this is the data set from reference 
+	26 in the article (Shi et al. 2010). The file was downloaded from the ISME Journal website at
+	https://www.nature.com/articles/ismej2009148#MOESM4. (Supplementary Table S2.)
+
+3)	A descriptor file that specifies the structure of the expression data file. The descriptor 
+	must be in tab-separated values (TSV) format. The first line should say, “SKIP<tab>N”, where 
+	N is the number of header and blank lines to be skipped at the start of the time-series file. 
+	Each remaining line should describe one time point of the study. The format is 
+	“Column#<tab>hours”, where “hours” gives the number of elapsed hours at the time point. For 
+	example, in the Crocosphaera CSV file, column 7 gives expression measurement at the 3-hour 
+	time point, so its line is “7<tab>3”. For the study described in the article, this release 
+	includes data/Croco_columns.tsv.
+
+4)	Operon predictions for the organism under study. Browse to the list of organism links at
+	http://www.microbesonline.org/operons/OperonList.html, click on the desired organism, then
+	click the link "A tab-delimited version of this table". Copy the result to a file in data.
+	For the study described in the article, select Crocosphaera watsonii WH 8501.
+
+
+
+EXECUTION:
+
+1)	Edit the main() method at the bottom of Experiment.java. Change lines 829-842 to specify your 
+	4 data files. For the study described in the article, you just need to edit line 842, which 
+	specifies the name of the operon predictions file.
+
+2) 	Following the instructions in the comments in lines 911-919, add a few lines of code to 
+	evaluate WEKA's classifiers, to classify merge candidates using an LMT model, or to classify 	
+	merge candidates using any desired WEKA model.
+
+3)	Execute the Experiment class as a Java application.
+
+
+
+LICENSES:
+This software is released under v3.0 of the GNU General Public License. 
+WEKA is released under v3.0 of the GNU General Public License.
+
+
+
+VERSIONS: 
+Java code: Developed under JavaSE-15, but compatible with the free version 1.8. 
+WEKA revision 3.8.5.
