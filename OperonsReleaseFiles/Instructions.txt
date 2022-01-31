@@ -1,10 +1,14 @@
 INSTALLATION:
 
-1)	Un-jar the jar file.
+1)	Download from https://github.com/PhilipHeller/Operons.
+2)	Unzip the download. Its top level is called "OperonsReleaseFiles". In the Source_and_data subdir, 
+	unzip Source_and_data.zip.
 2)	Create an Eclipse workspace.
 3)	Create a Java project called “operonsproj” in the workspace.
-4)	Drag and drop the "data" directory onto “operonsproj” in the Package Explorer.
-5)	In the "src" subdir, select both "operons" and "weka", and drag/drop them onto "src" in the
+4)	Drag and drop the downloaded OperonsReleaseFiles/Source_and_data/data directory onto “operonsproj/” in the 
+	Package Explorer.
+5)	In the downloaded OperonsReleaseFiles/Source_and_datasrc/src subdir, select both "operons" and "weka", and 
+	drag/drop them onto "src" in the
 	Package Explorer. A number of WEKA packages will be marked with red flags to indicate they
 	contain compiler errors. The errors won't cause problems, as they are all in code that isn't used.
 
