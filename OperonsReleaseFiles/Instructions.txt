@@ -3,10 +3,10 @@ INSTALLATION:
 1)	Un-jar the jar file.
 2)	Create an Eclipse workspace.
 3)	Create a Java project called “operonsproj” in the workspace.
-4)	Into the project, import dirs “src”, "data", and "lib" from this release. You can easily do 
-	this by selecting the dirs and dragging them into the icon for the Java workspace.
-5)	In Project -> Properties -> Java Build Path, add lib/commons-math3-3.6.1.jar	 and 
-	lib/weka.jar to the project's build path.
+4)	Drag and drop the "data" directory onto “operonsproj” in the Package Explorer.
+5)	In the "src" subdir, select both "operons" and "weka", and drag/drop them onto "src" in the
+	Package Explorer. A number of WEKA packages will be marked with red flags to indicate they
+	contain compiler errors. The errors won't cause problems, as they are all in code that isn't used.
 
 
 
@@ -32,16 +32,17 @@ The "data" dir in Eclipse must contain 4 files:
 	time point, so its line is “7<tab>3”. For the study described in the article, this release 
 	includes data/Croco_columns.tsv.
 
-4)	Operon predictions for the organism under study. Download from the list of organism links at
-	http://www.microbesonline.org/operons/OperonList.html. For the study described in the 
-	article, select Crocosphaera watsonii WH 8501.
+4)	Operon predictions for the organism under study. Browse to the list of organism links at
+	http://www.microbesonline.org/operons/OperonList.html, click on the desired organism, then
+	click the link "A tab-delimited version of this table". Copy the result to a file in data.
+	For the study described in the article, select Crocosphaera watsonii WH 8501.
 
 
 
 EXECUTION:
 
-1)	Edit the main() method at the bottom of Experiment.java. Change lines 905-908 to specify your 
-	4 data files. For the study described in the article, you just need to edit line 908, which 
+1)	Edit the main() method at the bottom of Experiment.java. Change lines 829-842 to specify your 
+	4 data files. For the study described in the article, you just need to edit line 842, which 
 	specifies the name of the operon predictions file.
 
 2) 	Following the instructions in the comments in lines 911-919, add a few lines of code to 
@@ -55,11 +56,9 @@ EXECUTION:
 LICENSES:
 This software is released under v3.0 of the GNU General Public License. 
 WEKA is released under v3.0 of the GNU General Public License.
-The Apache Commons math library is released under Version 2.0 of the Apache License.
 
 
 
 VERSIONS: 
 Java code: Developed under JavaSE-15, but compatible with the free version 1.8. 
 WEKA revision 3.8.5.
-Apache Commons math library revision 3.6.1.
