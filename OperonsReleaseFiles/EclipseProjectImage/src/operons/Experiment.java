@@ -1,22 +1,3 @@
-/*
- 
-Copyright 2022 Philip Heller.
- 
-This file is part of Philip Heller's operon analysis application.
-
-The operon analysis application is free software: you can redistribute it and/or modify it under the terms of the 
-GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or 
-(at your option) any later version.
-
-The operon analysis application is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
-even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-for more details.
-
-You should have received a copy of the GNU General Public License along with the code. If not, see <https://www.gnu.org/licenses/>.
- 
-*/
-
-
 package operons;
 
 import java.io.*;
@@ -902,10 +883,10 @@ class Experiment
 	
 	public static void main(String[] args) throws Exception
 	{
-		File gbFile = new File("data/AADV02.1.gbff");
-		File timepointsCsv = new File("data/Shi_Croco.csv");
-		File timepointsDescripCsv = new File("data/Croco_columns.tsv");
-		File priorOps = new File("data/Arkinlab_Predicted_Operons_CROCO.rkn");
+		File gbFile = new File("data/YOUR_GENBANK_FILE");
+		File timepointsCsv = new File("data/YOUR_TIMEPOINTS_FILE");
+		File timepointsDescripCsv = new File("data/YOUR_TIMEPOINTS_DESCRIPTOR_FILE");
+		File priorOps = new File("data/YOUR_PRIOR_OPERONS_FILE");
 		Experiment exper = new Experiment(gbFile, timepointsCsv, timepointsDescripCsv, priorOps);
 		
 		//
@@ -913,10 +894,12 @@ class Experiment
 		// 		exper.rankClassifiers();
 		// To classify merge candidates with an LMT model, writing a report to File otsv:
 		//		Classifier classifier = new LMT();
-		//      exper.evaluateMergeCandidatesWithLMT(classifier, otsv);
+		//      exper.evaluateMergeCandidates(classifier, otsv);
 		// To use a different classifier model, use a different constructor call above. See static array
 		// CLASSIFIERS[] for names of available WEKA classes.
 		//
+		
+		
 		
 	}
 }
