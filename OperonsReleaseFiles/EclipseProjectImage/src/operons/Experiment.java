@@ -1,3 +1,22 @@
+/*
+ 
+Copyright 2022 Philip Heller.
+ 
+This file is part of Philip Heller's operon analysis application.
+
+The operon analysis application is free software: you can redistribute it and/or modify it under the terms of the 
+GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or 
+(at your option) any later version.
+
+The operon analysis application is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+for more details.
+
+You should have received a copy of the GNU General Public License along with the code. If not, see <https://www.gnu.org/licenses/>.
+ 
+*/
+
+
 package operons;
 
 import java.io.*;
@@ -5,7 +24,6 @@ import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.apache.commons.math3.distribution.NormalDistribution;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
@@ -621,7 +639,6 @@ class Experiment
 				sop(".. FAIL");
 			}
 		}
-		sop("** Done classifying **");
 		
 		// Sort by accuracy.
 		Map<Double, List<String>> tempMap =
@@ -667,63 +684,7 @@ class Experiment
 	
 
 
-							
-							
-							
-							
-								/*****************************************
-								 *                                       *
-								 *                GAUSSIAN               *
-								 *                                       *
-								 *****************************************/
-							
-							
-							
-
-
-
-	//
-	// Censor each training instance in turn, retrain the LMT, and evaluate
-	// the censored instance. Construct one Gaussian distribution for the 
-	// positive instance scores and one for the negative instance scores.
-	//
-	private StatisticsBundle summarizeCensoredScoreOfNegatives() throws Exception
-	{
-		List<Double> censoredScores = new ArrayList<>();
-		for (Operon censoredOp: dielNegativeOperons)
-		{
-			// Censor the operon from training, train on the rest, and evaluate the censored operon.
-			Experiment censoredExper = new Experiment(this);
-			censoredExper.dielPriorPredictedOperons.remove(censoredOp);		// one of these
-			censoredExper.dielNegativeOperons.remove(censoredOp);			// will remove something
-			Classifier lmtClassifier = buildAndTrainLTMClassifier();
-			StatisticsBundle stats = censoredOp.computeAblimStatistics();
-			Instance inst = stats.toWEKAInstance();
-			double[] distn = lmtClassifier.distributionForInstance(inst);
-			censoredScores.add(distn[0]);
-		}
-		return new StatisticsBundle(censoredScores);
-	}	
-	
-	
-	private NormalDistribution buildDistributionForNegativeTrainingData() throws Exception
-	{
-		StatisticsBundle bundle = summarizeCensoredScoreOfNegatives();
-		return new NormalDistribution(bundle.getMean(), bundle.getStdDev());
-	}
-
-
-	//
-	// Suppose an accepted item is really negative. It was accepted due to high score. What is the probability
-	// that a negative item has a score this high or higher?
-	//
-	double probFP(NormalDistribution negativeDistribution, double scoreOfAccepted)
-	{
-		return 1 - negativeDistribution.cumulativeProbability(scoreOfAccepted);	// P(x >= scoreOfAccepted)
-	}
-
-	
-	
+				
 	
 	
 	
@@ -751,15 +712,11 @@ class Experiment
 		for (int i=0; i<priorPredictedOperons.size()-1; i++)
 		{
 			Operon op1 = priorPredictedOperons.get(i);
-			//if (op1.size() != 2)
-			//	continue;
 			if (!op1.hasAllTxs())
 				continue;
 			if (op1.nDielGenes() == 0)
 				continue;
 			Operon op2 = priorPredictedOperons.get(i+1);
-			//if (op2.size() != 2)
-			//	continue;
 			if (!op2.hasAllTxs())
 				continue;
 			if (op2.nDielGenes() == 0)
@@ -780,6 +737,9 @@ class Experiment
 	
 	void evaluateMergeCandidates(Classifier classifier, File otsv) throws Exception
 	{
+		// Train the classifier on this experiment's diel data.
+		trainClassifier(classifier);
+		
 		// Evaluate candidates.
 		List<Operon[]> candidates = collectMergeCandidates();
 		Map<Operon[], Double> candidateToScore = new HashMap<>();
@@ -797,6 +757,7 @@ class Experiment
 			catch (Exception x)
 			{
 				sop("??? " + x.getMessage());
+				x.printStackTrace();
 				System.exit(1);
 			}
 		}
@@ -810,33 +771,20 @@ class Experiment
 		
 		// Report.
 		DecimalFormat scoreFormat = new DecimalFormat("#.##");
-		DecimalFormat probFormat = new DecimalFormat("0.##E0");
-		NormalDistribution negativeTrainingSetDistn = buildDistributionForNegativeTrainingData();
 		try (FileWriter fw = new FileWriter(otsv))
 		{
 			String header = "Prior 1\tPrior 2\tScore\tP(fp)";
 			fw.write(header + "\n");
-			sop(header);
 			for (Double score: scoreToCandidates.keySet())
 			{
 				for (Operon[] priors: scoreToCandidates.get(score))
 				{
-					double pFp = probFP(negativeTrainingSetDistn, score);
-					String s = priors[0] + "\t" + priors[1] + "\t" + scoreFormat.format(score) + "\t" + probFormat.format(pFp);
+					String s = priors[0] + "\t" + priors[1] + "\t" + scoreFormat.format(score);
 					s = s.replaceAll("CwatDRAFT_", "");
 					fw.write(s + "\n");
-					sop(s.replaceAll("\\|", ", "));
 				}
 			}
 		}
-	}
-	
-	
-	private Classifier buildAndTrainLTMClassifier()
-	{
-		Classifier classifier = new LMT();
-		trainClassifier(classifier);
-		return classifier;
 	}
 	
 	
@@ -844,7 +792,7 @@ class Experiment
 	{
 		try
 		{
-			File arff = new File(TEMP_DIR, "arff");
+			File arff = new File(TEMP_DIR, "arff");  
 			writeArff(arff, true);
 			Instances instances = readArff(arff);
 			arff.delete();
@@ -883,23 +831,20 @@ class Experiment
 	
 	public static void main(String[] args) throws Exception
 	{
-		File gbFile = new File("data/YOUR_GENBANK_FILE");
-		File timepointsCsv = new File("data/YOUR_TIMEPOINTS_FILE");
-		File timepointsDescripCsv = new File("data/YOUR_TIMEPOINTS_DESCRIPTOR_FILE");
-		File priorOps = new File("data/YOUR_PRIOR_OPERONS_FILE");
-		Experiment exper = new Experiment(gbFile, timepointsCsv, timepointsDescripCsv, priorOps);
+		File gbFile = new File("data/AADV02.1.gbff");
+		File timepointsCsv = new File("data/Shi_Croco.csv");
+		File timepointsDescripCsv = new File("data/Croco_columns.tsv");
+		File priorOpsTsv = new File("Your_Operon_Predictions_File");
+		Experiment exper = new Experiment(gbFile, timepointsCsv, timepointsDescripCsv, priorOpsTsv);
 		
 		//
 		// To evaluate WEKA classifiers:
-		// 		exper.rankClassifiers();
-		// To classify merge candidates with an LMT model, writing a report to File otsv:
+		//		exper.rankClassifiers();
+		// To classify merge candidates with an LMT model, writing a report to a TSV file:
 		//		Classifier classifier = new LMT();
-		//      exper.evaluateMergeCandidates(classifier, otsv);
+		// 		exper.evaluateMergeCandidates(classifier, new File("your_TSV_file"));
 		// To use a different classifier model, use a different constructor call above. See static array
 		// CLASSIFIERS[] for names of available WEKA classes.
 		//
-		
-		
-		
 	}
 }
